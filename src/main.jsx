@@ -8,6 +8,7 @@ import Register from './Register.jsx';
 import PrivateRoute from './PrivateRoute.jsx'
 import AuthProvider from "./AuthProvider.jsx";
 import './index.css'
+import AddCrop from "./AddCrops.jsx";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,15 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      {
+       path: "/add-crop",
+       element: (
+         <PrivateRoute>
+          <AddCrop></AddCrop>
+          </PrivateRoute>
+  ),
+},
+
     ],
   },
 ])
