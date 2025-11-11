@@ -64,12 +64,20 @@ const AuthProvider = ({children}) =>{
     return signOut(auth);
   };
 
+   const loginUser = (data) => setUser(data);
+  const logoutUser = () => setUser(null);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
     });
     return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const savedUser = JSON.parse(localStorage.getItem("user"));
+    if (savedUser) setUser(savedUser);
   }, []);
 
    const authInfo = {
@@ -83,7 +91,7 @@ const AuthProvider = ({children}) =>{
 
 
   return (
-    <AuthContext.Provider value={authInfo}>
+    <AuthContext.Provider value={ {authInfo,user, loginUser, logoutUser} }>
       {children}
     </AuthContext.Provider>
   );
