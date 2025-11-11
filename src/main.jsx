@@ -1,28 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, } from "react-router";
-import { RouterProvider } from "react-router/dom";
+
 import App from './App.jsx';
 import Login from './Login.jsx';
 import Register from './Register.jsx';
-import PrivateRoute from './PrivateRoute.jsx'
+import PrivateRoute from './PrivateRoute.jsx';
 import AuthProvider from "./AuthProvider.jsx";
-import './index.css'
 import AddCrop from "./AddCrops.jsx";
+import AllCrops from "./AllCrops.jsx";
+import Home from "./Home.jsx"; 
+import './index.css';
+import { createBrowserRouter, RouterProvider } from "react-router";
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App></App>,
+    element: <App />, 
     children: [
-      {
-        path: '/login',
-        element: <Login></Login>,
-      },
-      {
-        path: '/register',
-        element: <Register></Register>,
-      },
+      { path: '/', element: <Home /> }, 
+      { path: '/login', element: <Login /> },
+      { path: '/register', element: <Register /> },
       {
         path: '/secret',
         element: (
@@ -34,23 +31,22 @@ const router = createBrowserRouter([
         ),
       },
       {
-       path: "/add-crop",
-       element: (
-         <PrivateRoute>
-          <AddCrop></AddCrop>
+        path: '/add-crop',
+        element: (
+          <PrivateRoute>
+            <AddCrop />
           </PrivateRoute>
-  ),
-},
-
+        ),
+      },
+      { path: '/all-crops', element: <AllCrops /> },
     ],
   },
-])
-
+]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);
