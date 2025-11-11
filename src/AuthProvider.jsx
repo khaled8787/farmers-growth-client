@@ -61,6 +61,8 @@ const AuthProvider = ({children}) =>{
 
    const logOut = () => {
     setLoading(true);
+    setUser(null);
+    localStorage.removeItem("user");
     return signOut(auth);
   };
 
@@ -87,11 +89,13 @@ const AuthProvider = ({children}) =>{
     signIn,
     googleLogin,
     logOut,
+    loginUser,
+    logoutUser
   };
 
 
   return (
-    <AuthContext.Provider value={ {authInfo,user, loginUser, logoutUser} }>
+    <AuthContext.Provider value={ {...authInfo} }>
       {children}
     </AuthContext.Provider>
   );

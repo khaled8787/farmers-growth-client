@@ -15,16 +15,9 @@ const AllCrops = () => {
       });
   }, []);
 
-  
   useEffect(() => {
-    if (search.trim() === "") {
-      setFiltered(crops);
-    } else {
-      const filteredCrops = crops.filter(c =>
-        c.name.toLowerCase().includes(search.toLowerCase())
-      );
-      setFiltered(filteredCrops);
-    }
+    if (!search.trim()) return setFiltered(crops);
+    setFiltered(crops.filter(c => c.name.toLowerCase().includes(search.toLowerCase())));
   }, [search, crops]);
 
   return (
@@ -33,18 +26,16 @@ const AllCrops = () => {
         All Crops
       </h2>
 
-      
       <div className="flex justify-center mb-8">
         <input
           type="text"
           placeholder="Search crops..."
           className="border p-2 rounded w-full max-w-md focus:outline-green-500"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={e => setSearch(e.target.value)}
         />
       </div>
 
-      
       {filtered.length > 0 ? (
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filtered.map(crop => (
@@ -64,9 +55,7 @@ const AllCrops = () => {
                   Price: {crop.pricePerUnit} / {crop.unit}
                 </p>
                 <p className="text-gray-700 mt-1">Quantity: {crop.quantity}</p>
-                <p className="text-gray-500 mt-2">
-                  {crop.description?.slice(0, 80)}...
-                </p>
+                <p className="text-gray-500 mt-2">{crop.description?.slice(0, 80)}...</p>
                 <p className="text-gray-500 mt-2">Location: {crop.location}</p>
                 <Link
                   to={`/crops/${crop._id}`}
@@ -79,9 +68,7 @@ const AllCrops = () => {
           ))}
         </div>
       ) : (
-        <p className="text-center text-gray-500 mt-12 text-lg">
-          No crops found.
-        </p>
+        <p className="text-center text-gray-500 mt-12 text-lg">No crops found.</p>
       )}
     </div>
   );

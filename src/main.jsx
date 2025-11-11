@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-
+import CropDetails from "./CropDetails.jsx";
 import App from './App.jsx';
 import Login from './Login.jsx';
 import Register from './Register.jsx';
@@ -39,6 +39,10 @@ const router = createBrowserRouter([
         ),
       },
       { path: '/all-crops', element: <AllCrops /> },
+      {
+  path: "/crops/:id",
+  element: <CropDetails></CropDetails>,
+},
     ],
   },
 ]);
