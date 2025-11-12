@@ -1,57 +1,66 @@
-import { useContext } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
-import { AuthContext } from "./AuthProvider";
 
 const AddCrop = () => {
-  const { user } = useContext(AuthContext);
+  const [formData, setFormData] = useState({
+    name: "",
+    type: "",
+    pricePerUnit: "",
+    unit: "",
+    quantity: "",
+    description: "",
+    location: "",
+    image: "",
+  });
 
-  const handleAddCrop = (e) => {
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const form = e.target;
-    const cropData = {
-      name: form.name.value,
-      type: form.type.value,
-      pricePerUnit: form.pricePerUnit.value,
-      unit: form.unit.value,
-      quantity: form.quantity.value,
-      description: form.description.value,
-      location: form.location.value,
-      image: form.image.value,
+
+    const postData = {
+      ...formData,
+      ownerEmail: "anonymous@gmail.com",
+      ownerName: "Anonymous",
     };
 
     fetch("http://localhost:5000/crops/add", {
       method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("krishilink-token")}`,
-      },
-      body: JSON.stringify(cropData),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(postData),
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.success) {
-          toast.success("Crop added successfully!");
-          form.reset();
-        }
+        toast.success("Crop added successfully!");
+        setFormData({
+          name: "",
+          type: "",
+          pricePerUnit: "",
+          unit: "",
+          quantity: "",
+          description: "",
+          location: "",
+          image: "",
+        });
       })
-      .catch(() => toast.error("Failed to add crop"));
+      .catch(() => toast.error("Something went wrong!"));
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10">
-      <h2 className="text-2xl font-bold text-center mb-4 text-green-700">
-        Add a New Crop
-      </h2>
-      <form onSubmit={handleAddCrop} className="space-y-3">
-        <input name="name" placeholder="Crop Name" className="input input-bordered w-full" required />
-        <input name="type" placeholder="Type (e.g., Fruit, Vegetable)" className="input input-bordered w-full" required />
-        <input name="pricePerUnit" type="number" placeholder="Price Per Unit" className="input input-bordered w-full" required />
-        <input name="unit" placeholder="Unit (kg, ton, bag)" className="input input-bordered w-full" required />
-        <input name="quantity" type="number" placeholder="Quantity" className="input input-bordered w-full" required />
-        <input name="description" placeholder="Short Description" className="input input-bordered w-full" required />
-        <input name="location" placeholder="Location" className="input input-bordered w-full" required />
-        <input name="image" placeholder="Image URL" className="input input-bordered w-full" required />
-        <button className="btn btn-success w-full">Add Crop</button>
+    <div className="max-w-xl mx-auto mt-12 px-4">
+      <h2 className="text-3xl font-bold text-green-700 mb-6">Add a New Crop</h2>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <input name="name" value={formData.name} onChange={handleChange} placeholder="Crop Name" className="border p-2 rounded"/>
+        <input name="type" value={formData.type} onChange={handleChange} placeholder="Type" className="border p-2 rounded"/>
+        <input name="pricePerUnit" value={formData.pricePerUnit} onChange={handleChange} placeholder="Price per Unit" type="number" className="border p-2 rounded"/>
+        <input name="unit" value={formData.unit} onChange={handleChange} placeholder="Unit" className="border p-2 rounded"/>
+        <input name="quantity" value={formData.quantity} onChange={handleChange} placeholder="Quantity" type="number" className="border p-2 rounded"/>
+        <input name="description" value={formData.description} onChange={handleChange} placeholder="Description" className="border p-2 rounded"/>
+        <input name="location" value={formData.location} onChange={handleChange} placeholder="Location" className="border p-2 rounded"/>
+        <input name="image" value={formData.image} onChange={handleChange} placeholder="Image URL" className="border p-2 rounded"/>
+        <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Add Crop</button>
       </form>
     </div>
   );

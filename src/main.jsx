@@ -11,6 +11,7 @@ import AllCrops from "./AllCrops.jsx";
 import Home from "./Home.jsx"; 
 import './index.css';
 import { createBrowserRouter, RouterProvider } from "react-router";
+import MyPosts from "./MyPost.jsx";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,15 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      {
+  path: "/my-posts",
+  element: (
+    <PrivateRoute>
+      <MyPosts></MyPosts>
+    </PrivateRoute>
+  ),
+},
+
       { path: '/all-crops', element: <AllCrops /> },
       {
   path: "/crops/:id",
