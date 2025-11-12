@@ -12,6 +12,7 @@ import Home from "./Home.jsx";
 import './index.css';
 import { createBrowserRouter, RouterProvider } from "react-router";
 import MyPosts from "./MyPost.jsx";
+import MyInterests from "./MyInterest.jsx";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,8 @@ const router = createBrowserRouter([
 },
 
       { path: '/all-crops', element: <AllCrops /> },
+      { path: "/my-interests", element: <MyInterests></MyInterests> },
+
       {
   path: "/crops/:id",
   element: <CropDetails></CropDetails>,
