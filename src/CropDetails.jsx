@@ -4,30 +4,42 @@ import { AuthContext } from "./AuthProvider";
 import { toast } from "react-toastify";
 
 const CropDetails = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [crops, setCrops] = useState([]);
   const [crop, setCrop] = useState(null);
   const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext);
 
+  
   useEffect(() => {
     fetch("http://localhost:5000/crops")
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         setCrops(data);
-        const found = data.find(c => c._id === parseInt(id));
+        const found = data.find((c) => c._id === parseInt(id));
         setCrop(found);
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, [id]);
 
+  
   const handleInterest = () => {
     if (!user) {
       toast.error("Please login first!");
       return;
     }
 
+    
+    const already = crop?.interests?.some(
+      (i) => i.userEmail === user.email
+    );
+    if (already) {
+      toast.error("You already showed interest!");
+      return;
+    }
+
+    
     fetch(`http://localhost:5000/crops/${id}/interest`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -36,11 +48,20 @@ const CropDetails = () => {
         userName: user.displayName,
       }),
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         if (data.message?.includes("already")) {
           toast.error("You already showed interest!");
         } else {
+          
+          const updated = {
+            ...crop,
+            interests: [
+              ...(crop.interests || []),
+              { userEmail: user.email, userName: user.displayName },
+            ],
+          };
+          setCrop(updated);
           toast.success("Interest added successfully!");
         }
       })
@@ -70,16 +91,25 @@ const CropDetails = () => {
           className="w-full md:w-1/2 h-80 object-cover rounded-xl shadow-lg"
         />
         <div className="flex-1">
-          <h2 className="text-3xl font-bold text-green-800 mb-4">{crop.name}</h2>
-          <p className="text-gray-700 mb-2"><strong>Type:</strong> {crop.type}</p>
+          <h2 className="text-3xl font-bold text-green-800 mb-4">
+            {crop.name}
+          </h2>
+          <p className="text-gray-700 mb-2">
+            <strong>Type:</strong> {crop.type}
+          </p>
           <p className="text-gray-700 mb-2">
             <strong>Price:</strong> ৳{crop.pricePerUnit} / {crop.unit}
           </p>
-          <p className="text-gray-700 mb-2"><strong>Quantity:</strong> {crop.quantity}</p>
-          <p className="text-gray-700 mb-2"><strong>Location:</strong> {crop.location}</p>
-          <p className="text-gray-600 mt-4 leading-relaxed">{crop.description}</p>
+          <p className="text-gray-700 mb-2">
+            <strong>Quantity:</strong> {crop.quantity}
+          </p>
+          <p className="text-gray-700 mb-2">
+            <strong>Location:</strong> {crop.location}
+          </p>
+          <p className="text-gray-600 mt-4 leading-relaxed">
+            {crop.description}
+          </p>
 
-          
           <button
             onClick={handleInterest}
             className="mt-6 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
@@ -87,7 +117,6 @@ const CropDetails = () => {
             I'm Interested
           </button>
 
-          
           <Link
             to="/all-crops"
             className="inline-block mt-6 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
@@ -95,10 +124,11 @@ const CropDetails = () => {
             ← Back to All Crops
           </Link>
 
-          
           {crop.interests && crop.interests.length > 0 && (
             <div className="mt-6">
-              <h3 className="text-lg font-semibold mb-2">Interested Buyers:</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Interested Buyers:
+              </h3>
               <ul className="list-disc list-inside text-gray-700">
                 {crop.interests.map((i, idx) => (
                   <li key={idx}>
