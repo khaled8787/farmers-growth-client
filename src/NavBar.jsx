@@ -53,6 +53,9 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
+                <Link className="hover:text-green-200" to="/my-crops">My Crops</Link>
+              </li>
+              <li>
                 <button
                   onClick={handleLogout}
                   className="bg-white text-green-600 px-4 py-1 rounded hover:bg-gray-100 transition"
