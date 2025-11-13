@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
-
-
 const STATUS_ORDER = { accepted: 1, pending: 2, rejected: 3 };
 
 const MyInterests = () => {
@@ -10,7 +8,7 @@ const MyInterests = () => {
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState("default");
 
-  const currentUserEmail = "test@gmail.com"; 
+  const currentUserEmail = "test@gmail.com";
 
   useEffect(() => {
     setLoading(true);
@@ -29,8 +27,8 @@ const MyInterests = () => {
   const sorted = () => {
     if (sortBy === "status") {
       return [...interests].sort((a, b) => {
-        const oa = STATUS_ORDER[a.status] || 99;
-        const ob = STATUS_ORDER[b.status] || 99;
+        const oa = STATUS_ORDER[a.status?.toLowerCase()] || 99;
+        const ob = STATUS_ORDER[b.status?.toLowerCase()] || 99;
         if (oa !== ob) return oa - ob;
         return (a.cropName || "").localeCompare(b.cropName || "");
       });
@@ -42,7 +40,8 @@ const MyInterests = () => {
   };
 
   if (loading) return <div className="text-center mt-20">Loading...</div>;
-  if (!interests || interests.length === 0) return <div className="text-center mt-20">You have not sent any interests.</div>;
+  if (!interests || interests.length === 0)
+    return <div className="text-center mt-20">You have not sent any interests.</div>;
 
   return (
     <div className="max-w-6xl mx-auto mt-12 px-4">
@@ -50,7 +49,11 @@ const MyInterests = () => {
         <h2 className="text-2xl font-bold">My Interests</h2>
         <div className="flex items-center gap-2">
           <label className="text-sm">Sort:</label>
-          <select value={sortBy} onChange={e => setSortBy(e.target.value)} className="border p-1 rounded">
+          <select
+            value={sortBy}
+            onChange={e => setSortBy(e.target.value)}
+            className="border p-1 rounded"
+          >
             <option value="default">Default</option>
             <option value="status">By Status (pending → accepted → rejected)</option>
             <option value="crop">By Crop Name</option>
@@ -70,13 +73,13 @@ const MyInterests = () => {
         </thead>
         <tbody>
           {sorted().map(item => (
-            <tr key={item.interestId}>
+            <tr key={item._id || item.interestId}>
               <td className="border px-4 py-2">
                 <Link to={`/crops/${item.cropId}`} className="text-green-700 underline">
-                  {item.cropName}
+                  {item.cropName || "Unnamed"}
                 </Link>
               </td>
-              <td className="border px-4 py-2">{item.ownerName}</td>
+              <td className="border px-4 py-2">{item.ownerName || item.owner?.ownerName || "Unknown"}</td>
               <td className="border px-4 py-2">{item.quantity}</td>
               <td className="border px-4 py-2">{item.message}</td>
               <td className="border px-4 py-2 capitalize">{item.status}</td>
