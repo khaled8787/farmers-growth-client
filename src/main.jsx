@@ -15,6 +15,7 @@ import MyCrops from "./MyCrops";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import MyPosts from "./MyPost.jsx";
 import MyInterests from "./MyInterest.jsx";
+import NotFound from "./NotFound.jsx";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,7 @@ const router = createBrowserRouter([
 },
     ],
   },
+  { path: "*", element: <NotFound></NotFound> }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

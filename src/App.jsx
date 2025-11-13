@@ -7,10 +7,10 @@ import { ToastContainer } from 'react-toastify';
 
 const App = () => {
   return (
-    <div>
+    <div className='min-h-screen flex flex-col'>
       <ToastContainer></ToastContainer>
       <Navbar />
-      <main>
+      <main className='flex-1'>
         <Outlet></Outlet>
       </main>
       <Footer />
