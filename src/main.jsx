@@ -10,6 +10,7 @@ import AddCrop from "./AddCrops.jsx";
 import AllCrops from "./AllCrops.jsx";
 import Home from "./Home.jsx"; 
 import './index.css';
+import MyProfile from "./MyProfile";
 import MyCrops from "./MyCrops";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import MyPosts from "./MyPost.jsx";
@@ -53,6 +54,7 @@ const router = createBrowserRouter([
       { path: '/all-crops', element: <AllCrops /> },
       { path: "/my-interests", element: <MyInterests></MyInterests> },
       {path :"/my-crops", element :<MyCrops />},
+      {path :"/my-profile", element: <MyProfile></MyProfile>},
       {
   path: "/crops/:id",
   element: <CropDetails></CropDetails>,
