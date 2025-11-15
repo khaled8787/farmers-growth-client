@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { Link, useParams } from "react-router";
 
 const CropDetails = () => {
-  const { id } = useParams();  // <-- এই id ঠিক আসবে
+  const { id } = useParams();
   const [crop, setCrop] = useState(null);
   const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext);
@@ -13,7 +13,7 @@ const CropDetails = () => {
   const currentUserName = user?.displayName || "Unknown User";
   console.log(id)
   useEffect(() => {
-    if (!id) return; // id না থাকলে fetch করা বন্ধ
+    if (!id) return; 
     fetch(`http://localhost:5000/crops/${id}`)
       .then(res => res.json())
       .then(data => { setCrop(data); setLoading(false); })

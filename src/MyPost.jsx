@@ -9,10 +9,9 @@ const MyPosts = () => {
   const [crops, setCrops] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [editCrop, setEditCrop] = useState(null); // modal data
-  const [deleteCrop, setDeleteCrop] = useState(null); // delete modal
+  const [editCrop, setEditCrop] = useState(null); 
+  const [deleteCrop, setDeleteCrop] = useState(null); 
 
-  // Load user's crops
   useEffect(() => {
     if (!currentUserEmail) return;
     fetch(`http://localhost:5000/crops/myCrops?userEmail=${encodeURIComponent(currentUserEmail)}`)
@@ -24,7 +23,6 @@ const MyPosts = () => {
       .catch(err => setLoading(false));
   }, [currentUserEmail]);
 
-  // Handle Update
   const handleUpdate = () => {
     fetch(`http://localhost:5000/crops/update/${editCrop._id}`, {
       method: "PUT",
@@ -40,7 +38,6 @@ const MyPosts = () => {
       .catch(() => toast.error("Update failed"));
   };
 
-  // Handle Delete
   const handleDelete = () => {
     fetch(`http://localhost:5000/crops/delete/${deleteCrop._id}?userEmail=${encodeURIComponent(currentUserEmail)}`, {
       method: "DELETE",
@@ -76,7 +73,6 @@ const MyPosts = () => {
         ))}
       </div>
 
-      {/* Edit Modal */}
       {editCrop && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg w-96">
@@ -139,7 +135,6 @@ const MyPosts = () => {
         </div>
       )}
 
-      {/* Delete Modal */}
       {deleteCrop && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg w-96 text-center">

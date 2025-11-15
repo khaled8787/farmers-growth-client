@@ -26,7 +26,6 @@ const Login = () => {
 
     if (!res.ok) throw new Error(data.message || "Login failed");
 
-    // Correct: data.user
     loginUser({
       email: data.user.email,
       name: data.user.name,

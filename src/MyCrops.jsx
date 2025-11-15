@@ -10,7 +10,6 @@ const MyCrops = () => {
   const [interests, setInterests] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Load user's posted crops
   useEffect(() => {
     if (!currentUserEmail) return;
 
@@ -25,7 +24,6 @@ const MyCrops = () => {
       .catch(err => console.log(err));
   }, [currentUserEmail]);
 
-  // Load interests received for seller
   useEffect(() => {
     if (!currentUserEmail) return;
 
