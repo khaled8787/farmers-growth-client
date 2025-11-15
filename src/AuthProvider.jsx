@@ -77,10 +77,7 @@ const AuthProvider = ({children}) =>{
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    const savedUser = JSON.parse(localStorage.getItem("user"));
-    if (savedUser) setUser(savedUser);
-  }, []);
+
 
    const authInfo = {
     user,
