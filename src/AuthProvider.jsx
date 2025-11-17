@@ -9,11 +9,10 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { app } from "./firebase.config";
-
+import { useNavigate } from "react-router";
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
-
 const AuthProvider = ({children}) =>{
     const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -57,6 +56,7 @@ const AuthProvider = ({children}) =>{
    const googleLogin = () => {
     setLoading(true);
     return signInWithPopup(auth, googleProvider);
+
   };
 
    const logOut = () => {
