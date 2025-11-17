@@ -14,7 +14,7 @@ const MyPosts = () => {
 
   useEffect(() => {
     if (!currentUserEmail) return;
-    fetch(`http://localhost:5000/crops/myCrops?userEmail=${encodeURIComponent(currentUserEmail)}`)
+    fetch(`https://farmer-growth-server.vercel.app/crops/myCrops?userEmail=${encodeURIComponent(currentUserEmail)}`)
       .then(res => res.json())
       .then(data => {
         setCrops(data || []);
@@ -24,7 +24,7 @@ const MyPosts = () => {
   }, [currentUserEmail]);
 
   const handleUpdate = () => {
-    fetch(`http://localhost:5000/crops/update/${editCrop._id}`, {
+    fetch(`https://farmer-growth-server.vercel.app/crops/update/${editCrop._id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...editCrop, userEmail: currentUserEmail }),
@@ -39,7 +39,7 @@ const MyPosts = () => {
   };
 
   const handleDelete = () => {
-    fetch(`http://localhost:5000/crops/delete/${deleteCrop._id}?userEmail=${encodeURIComponent(currentUserEmail)}`, {
+    fetch(`https://farmer-growth-server.vercel.app/crops/delete/${deleteCrop._id}?userEmail=${encodeURIComponent(currentUserEmail)}`, {
       method: "DELETE",
     })
       .then(res => res.json())

@@ -6,7 +6,7 @@ const AllCrops = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/crops")
+    fetch("https://farmer-growth-server.vercel.app/crops")
       .then(res => res.json())
       .then(data => {
         setCrops(data || []);

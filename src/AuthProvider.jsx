@@ -23,7 +23,7 @@ const AuthProvider = ({children}) =>{
     return createUserWithEmailAndPassword(auth, email, password)
     .then(res => {
       const loggedUser = { email: res.user.email };
-       fetch("http://localhost:5000/auth/jwt", {
+       fetch("https://farmer-growth-server.vercel.app/auth/jwt", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loggedUser)
@@ -41,7 +41,7 @@ const AuthProvider = ({children}) =>{
     return signInWithEmailAndPassword(auth, email, password)
     .then(res => {
       const loggedUser = { email: res.user.email };
-       fetch("http://localhost:5000/auth/jwt", {
+       fetch("https://farmer-growth-server.vercel.app/auth/jwt", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loggedUser)

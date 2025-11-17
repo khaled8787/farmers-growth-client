@@ -13,7 +13,7 @@ const MyCrops = () => {
   useEffect(() => {
     if (!currentUserEmail) return;
 
-    fetch("http://localhost:5000/crops")
+    fetch("https://farmer-growth-server.vercel.app/crops")
       .then(res => res.json())
       .then(data => {
         const myCrops = data.filter(
@@ -28,7 +28,7 @@ const MyCrops = () => {
     if (!currentUserEmail) return;
 
     fetch(
-      `http://localhost:5000/interests/sellerInterests?userEmail=${encodeURIComponent(
+      `https://farmer-growth-server.vercel.app/interests/sellerInterests?userEmail=${encodeURIComponent(
         currentUserEmail
       )}`
     )
@@ -44,7 +44,7 @@ const MyCrops = () => {
   }, [currentUserEmail]);
 
   const handleUpdateInterest = (interestId, status) => {
-    fetch(`http://localhost:5000/interests/update/${interestId}`, {
+    fetch(`https://farmer-growth-server.vercel.app/interests/update/${interestId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status, userEmail: currentUserEmail }),

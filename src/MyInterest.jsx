@@ -13,7 +13,7 @@ const MyInterest = () => {
 
   setLoading(true);
 
-   fetch(`http://localhost:5000/interests/myInterests?userEmail=${encodeURIComponent(userEmail)}`)
+   fetch(`https://farmer-growth-server.vercel.app/interests/myInterests?userEmail=${encodeURIComponent(userEmail)}`)
     .then(res => res.json())
     .then(data => {
       if (!Array.isArray(data)) {

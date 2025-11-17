@@ -28,7 +28,7 @@ const AddCrop = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/crops/add", {
+      const res = await fetch("https://farmer-growth-server.vercel.app/crops/add", {
         method: "POST",
         headers: {
           "content-type": "application/json",

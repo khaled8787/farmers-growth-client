@@ -14,7 +14,7 @@ const Register = () => {
     const password = e.target.password.value;
 
     createUser(email, password)
-      .then(() => navigate("/login"))
+      .then(() => navigate("/"))
       .catch(err => setError(err.message));
   };
 

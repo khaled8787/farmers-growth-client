@@ -14,7 +14,7 @@ const CropDetails = () => {
   console.log(id)
   useEffect(() => {
     if (!id) return; 
-    fetch(`http://localhost:5000/crops/${id}`)
+    fetch(`https://farmer-growth-server.vercel.app/crops/${id}`)
       .then(res => res.json())
       .then(data => { setCrop(data); setLoading(false); })
       .catch(() => setLoading(false));
@@ -31,7 +31,7 @@ const CropDetails = () => {
     return;
   }
 
-  fetch("http://localhost:5000/interests/add", {
+  fetch("https://farmer-growth-server.vercel.app/interests/add", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

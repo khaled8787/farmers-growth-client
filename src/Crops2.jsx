@@ -8,7 +8,7 @@ const FeaturedCrops = () => {
   const [crops, setCrops] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/crops") 
+    fetch("https://farmer-growth-server.vercel.app/crops") 
       .then((res) => res.json())
       .then((data) => setCrops(data.slice(0, 4)))
       .catch((err) => console.error(err));

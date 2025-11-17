@@ -16,7 +16,7 @@ const Login = () => {
   e.preventDefault();
   setError(""); 
   try {
-    const res = await fetch("http://localhost:5000/auth/login", {
+    const res = await fetch("https://farmer-growth-server.vercel.app/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
