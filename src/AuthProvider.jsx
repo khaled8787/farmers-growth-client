@@ -9,7 +9,6 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { app } from "./firebase.config";
-import { useNavigate } from "react-router";
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();

@@ -1,28 +1,42 @@
-import React from "react";
+import React, { useContext } from "react";
 import ReactDOM from "react-dom/client";
-import CropDetails from "./CropDetails.jsx";
-import App from './App.jsx';
-import Login from './Login.jsx';
-import Register from './Register.jsx';
-import PrivateRoute from './PrivateRoute.jsx';
-import AuthProvider from "./AuthProvider.jsx";
+import { createBrowserRouter, RouterProvider } from "react-router";
+import App from "./App.jsx";
+import Login from "./Login.jsx";
+import Register from "./Register.jsx";
+import PrivateRoute from "./PrivateRoute.jsx";
+import AuthProvider, { AuthContext } from "./AuthProvider.jsx";
 import AddCrop from "./AddCrops.jsx";
 import AllCrops from "./AllCrops.jsx";
-import Home from "./Home.jsx"; 
-import './index.css';
+import Home from "./Home.jsx";
 import MyProfile from "./MyProfile";
 import MyCrops from "./MyCrops";
-import { createBrowserRouter, RouterProvider } from "react-router";
 import MyPosts from "./MyPost.jsx";
 import MyInterests from "./MyInterest.jsx";
+import CropDetails from "./CropDetails.jsx";
 import NotFound from "./NotFound.jsx";
+import "./index.css";
+
+
+const AddCropWrapper = () => {
+  const { user } = useContext(AuthContext); 
+  
+  if (!user) return <p className="text-center mt-10 text-xl">Loading user info...</p>; 
+  
+  return (
+    <AddCrop
+      currentUserEmail={user.email}     
+      currentUserName={user.displayName} 
+    />
+  );
+};
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />, 
+    element: <App />,
     children: [
-      { path: '/', element: <Home /> }, 
+      { path: '/', element: <Home /> },
       { path: '/login', element: <Login /> },
       { path: '/register', element: <Register /> },
       {
@@ -39,35 +53,24 @@ const router = createBrowserRouter([
         path: '/add-crop',
         element: (
           <PrivateRoute>
-            <AddCrop />
+            <AddCropWrapper /> 
           </PrivateRoute>
         ),
       },
-      {
-  path: "/my-posts",
-  element: (
-    <PrivateRoute>
-      <MyPosts></MyPosts>
-    </PrivateRoute>
-  ),
-},
-
-      { path: '/all-crops', element: <AllCrops /> },
-      { path: "/my-interests", element: <MyInterests></MyInterests> },
-      {path :"/my-crops", element :<MyCrops />},
-      {path :"/my-profile", element: <MyProfile></MyProfile>},
-      {
-  path: "/crops/:id",
-  element: <PrivateRoute><CropDetails></CropDetails></PrivateRoute>
-},
+      { path: "/my-posts", element: <PrivateRoute><MyPosts /></PrivateRoute> },
+      { path: "/all-crops", element: <AllCrops /> },
+      { path: "/my-interests", element: <MyInterests /> },
+      { path: "/my-crops", element: <MyCrops /> },
+      { path: "/my-profile", element: <MyProfile /> },
+      { path: "/crops/:id", element: <PrivateRoute><CropDetails /></PrivateRoute> },
     ],
   },
-  { path: "*", element: <NotFound></NotFound> }
+  { path: "*", element: <NotFound /> },
 ]);
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
+    <AuthProvider> 
       <RouterProvider router={router} />
     </AuthProvider>
   </React.StrictMode>
