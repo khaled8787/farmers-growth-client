@@ -53,11 +53,21 @@ const AuthProvider = ({children}) =>{
     });
   };
 
-   const googleLogin = () => {
-    setLoading(true);
-    return signInWithPopup(auth, googleProvider);
+  const googleLogin = () => {
+  setLoading(true);
+  return signInWithPopup(auth, googleProvider)
+    .then((result) => {
+      setUser(result.user);
+      setLoading(false);
+      return result.user;
+    })
+    .catch((err) => {
+      setLoading(false);
+      console.log(err);
+    });
+};
 
-  };
+
 
    const logOut = () => {
     setLoading(true);

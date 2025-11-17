@@ -11,6 +11,12 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
+  
+   const handleGoogle = () => {
+  googleLogin().then(() => {
+    navigate("/");
+  });
+};
 
   const handleSubmit = async (e) => {
   e.preventDefault();
@@ -71,7 +77,7 @@ const Login = () => {
       </form>
 
       <button
-        onClick={googleLogin}
+        onClick={handleGoogle}
         className="btn btn-outline w-full mt-3"
       >
         Sign in with Google

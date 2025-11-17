@@ -58,7 +58,7 @@ const router = createBrowserRouter([
       {path :"/my-profile", element: <MyProfile></MyProfile>},
       {
   path: "/crops/:id",
-  element: <CropDetails></CropDetails>,
+  element: <PrivateRoute><CropDetails></CropDetails></PrivateRoute>
 },
     ],
   },

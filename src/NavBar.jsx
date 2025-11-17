@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthProvider.jsx";
 import { Link, useNavigate } from "react-router";
 import { Moon, Sun, Menu, X } from "lucide-react";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -25,6 +26,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await logOut();
+      toast.success('Log Out Successfully');
       navigate("/");
     } catch (err) {
       console.error("Logout failed:", err);
