@@ -9,7 +9,10 @@ const AllCrops = () => {
     fetch("https://farmer-growth-server.vercel.app/crops")
       .then(res => res.json())
       .then(data => {
-        setCrops(data || []);
+        const sorted = (data || []).sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        setCrops(sorted);
         setLoading(false);
       })
       .catch(() => setLoading(false));

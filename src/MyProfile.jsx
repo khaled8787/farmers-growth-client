@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "./AuthProvider";
 import { toast } from "react-toastify";
 import { Link } from "react-router";
@@ -6,9 +6,15 @@ import { Link } from "react-router";
 const MyProfile = () => {
   const { user, setUser } = useContext(AuthContext); 
   const [editing, setEditing] = useState(false);
-  const [name, setName] = useState(user?.displayName || "");
-  const [email, setEmail] = useState(user?.email || "");
-  const [photoURL, setPhotoURL] = useState(user?.photoURL || "");
+  const [name, setName] = useState("");
+  const [photoURL, setPhotoURL] = useState("");
+  
+  useEffect(() => {
+    if(user){
+      setName(user.displayName || "");
+      setPhotoURL(user.photoURL || "");
+    }
+  }, [user]);
 
   if (!user) {
     return <div className="text-center mt-20 text-red-500">Please login to view profile.</div>;
@@ -16,13 +22,12 @@ const MyProfile = () => {
 
   const handleSave = (e) => {
     e.preventDefault();
-
     try {
       if (user.updateProfile) {
-        user.updateProfile({ displayName: name, photoURL: photoURL });
+        user.updateProfile({ displayName: name, photoURL });
       }
 
-      setUser({ ...user, displayName: name, email, photoURL });
+      setUser({ ...user, displayName: name, photoURL });
       toast.success("Profile updated successfully!");
       setEditing(false);
     } catch (err) {
@@ -47,12 +52,12 @@ const MyProfile = () => {
                 className="w-24 h-24 rounded-full object-cover"
               />
               <div>
-                <p className="text-xl font-semibold">{user.displayName}</p>
+                <p className="text-xl font-semibold">{user.displayName || "No Name"}</p>
                 <p className="text-gray-600">{user.email}</p>
               </div>
             </div>
 
-            <div className="flex gap-4 mt-4">
+            <div className="flex gap-4 mt-4 flex-wrap">
               <button
                 onClick={() => setEditing(true)}
                 className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
@@ -92,10 +97,9 @@ const MyProfile = () => {
               <label className="block font-semibold mb-1">Email:</label>
               <input
                 type="email"
-                className="w-full border p-2 rounded"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
+                className="w-full border p-2 rounded bg-gray-100 cursor-not-allowed"
+                value={user.email}
+                readOnly
               />
             </div>
 
@@ -108,9 +112,21 @@ const MyProfile = () => {
                 onChange={(e) => setPhotoURL(e.target.value)}
                 placeholder="Enter image URL"
               />
+              <p className="text-gray-500 text-sm mt-1">
+                Paste an image URL to update profile picture.
+              </p>
             </div>
 
-            <div className="flex gap-4 mt-2">
+            <div className="flex items-center gap-4 mt-2">
+              <img
+                src={displayPhoto}
+                alt="Preview"
+                className="w-20 h-20 rounded-full object-cover border"
+              />
+              <span>Preview</span>
+            </div>
+
+            <div className="flex gap-4 mt-4 flex-wrap">
               <button
                 type="submit"
                 className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"

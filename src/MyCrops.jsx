@@ -50,11 +50,26 @@ const MyCrops = () => {
       body: JSON.stringify({ status, userEmail: currentUserEmail }),
     })
       .then(res => res.json())
-      .then(data => {
+      .then(updatedInterest => {
         toast.success(`Interest ${status} successfully!`);
+
         setInterests(prev =>
-          prev.map(i => (i._id === interestId ? data : i))
+          prev.map(i => (i._id === interestId ? updatedInterest : i))
         );
+
+        if (status === "Accepted") {
+          setCrops(prev =>
+            prev.map(c => {
+              if (c._id === updatedInterest.cropId) {
+                return {
+                  ...c,
+                  quantity: c.quantity - updatedInterest.quantity,
+                };
+              }
+              return c;
+            })
+          );
+        }
       })
       .catch(() => toast.error("Server error!"));
   };
@@ -106,6 +121,7 @@ const MyCrops = () => {
                   <thead>
                     <tr className="bg-green-100 text-left">
                       <th className="px-4 py-2 border">Buyer Email</th>
+                      <th className="px-4 py-2 border">Quantity</th>
                       <th className="px-4 py-2 border">Status</th>
                       <th className="px-4 py-2 border text-center">Actions</th>
                     </tr>
@@ -115,6 +131,7 @@ const MyCrops = () => {
                     {cropInterests.map(i => (
                       <tr key={i._id} className="hover:bg-gray-50">
                         <td className="border px-4 py-2">{i.buyerEmail}</td>
+                        <td className="border px-4 py-2">{i.quantity}</td>
 
                         <td className="border px-4 py-2">
                           <span

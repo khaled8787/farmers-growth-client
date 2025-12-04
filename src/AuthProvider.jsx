@@ -7,6 +7,7 @@ import {
   signOut,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { app } from "./firebase.config";
 export const AuthContext = createContext(null);
@@ -75,6 +76,11 @@ const AuthProvider = ({children}) =>{
     return signOut(auth);
   };
 
+  const updateUserProfile = (profile) => {
+  if (!auth.currentUser) return Promise.reject(new Error("No user logged in"));
+  return updateProfile(auth.currentUser, profile);
+};
+
    const loginUser = (data) => setUser(data);
   const logoutUser = () => setUser(null);
 
@@ -94,6 +100,7 @@ const AuthProvider = ({children}) =>{
     createUser,
     signIn,
     googleLogin,
+    updateUserProfile,
     logOut,
     loginUser,
     logoutUser,
