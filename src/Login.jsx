@@ -1,9 +1,11 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "./AuthProvider";
 import { Link, useLocation, useNavigate } from "react-router";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { app } from "./firebase.config";
 
 const Login = () => {
-  const { loginUser, googleLogin } = useContext(AuthContext);
+  const { loginUser } = useContext(AuthContext);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,39 +13,42 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-  
-   const handleGoogle = () => {
-  googleLogin().then(() => {
-    navigate("/");
-  });
-};
+
+  const auth = getAuth(app);
+  const googleProvider = new GoogleAuthProvider();
+
+  const handleGoogle = async () => {
+    setError("");
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      loginUser({
+        email: user.email,
+        name: user.displayName,
+        photo: user.photoURL || null,
+      });
+      navigate(from, { replace: true });
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError(""); 
-  try {
-    const res = await fetch("https://farmer-growth-server.vercel.app/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) throw new Error(data.message || "Login failed");
-
-    loginUser({
-      email: data.user.email,
-      name: data.user.name,
-      photo: data.user.photo || null
-    });
-
-    navigate(from, { replace: true });
-  } catch (err) {
-    setError(err.message);
-  }
-};
-
+    e.preventDefault();
+    setError("");
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      loginUser({
+        email: user.email,
+        name: user.displayName,
+        photo: user.photoURL || null,
+      });
+      navigate(from, { replace: true });
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   return (
     <div className="max-w-sm mx-auto mt-20 p-6 border rounded-lg shadow-lg">

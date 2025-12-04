@@ -35,23 +35,28 @@ const AuthProvider = ({children}) =>{
     });
   };
 
-  const signIn = (email, password) => {
-    setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password)
-    .then(res => {
-      const loggedUser = { email: res.user.email };
-       fetch("https://farmer-growth-server.vercel.app/auth/jwt", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loggedUser)
-      })
-      .then(res => res.json())
-      .then(data => {
-        localStorage.setItem("krishilink-token", data.token);
-      });
-      return res;
+  const signIn = async (email, password) => {
+  setLoading(true);
+  try {
+    const res = await signInWithEmailAndPassword(auth, email, password);
+    const loggedUser = { email: res.user.email };
+
+    const tokenRes = await fetch("https://farmer-growth-server.vercel.app/auth/jwt", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(loggedUser)
     });
-  };
+    const data = await tokenRes.json();
+    localStorage.setItem("krishilink-token", data.token);
+
+    setLoading(false);
+    return res.user;
+  } catch (err) {
+    setLoading(false);
+    throw err;
+  }
+};
+
 
   const googleLogin = () => {
   setLoading(true);
