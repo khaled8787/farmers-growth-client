@@ -50,50 +50,100 @@ const Login = () => {
     }
   };
 
+  // 🔥 DEMO USER LOGIN
+  const handleDemoLogin = async () => {
+    setError("");
+    const demoEmail = "fatemaafrinsimu@gmail.com";
+    const demoPassword = "Khaled1@";
+
+    try {
+      setEmail(demoEmail);
+      setPassword(demoPassword);
+
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        demoEmail,
+        demoPassword
+      );
+      const user = userCredential.user;
+
+      loginUser({
+        email: user.email,
+        name: user.displayName,
+        photo: user.photoURL || null,
+      });
+
+      navigate(from, { replace: true });
+    } catch (err) {
+      setError("Demo login failed!");
+    }
+  };
+
   return (
-    <div className="max-w-sm mx-auto mt-20 p-6 border rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          name="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          className="input input-bordered w-full mb-3"
-          required
-        />
-        <input
-          name="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          className="input input-bordered w-full mb-3"
-          required
-        />
-        {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+    <div className="min-h-[80vh] flex items-center justify-center bg-gradient-to-b from-green-50 to-green-100 dark:from-slate-950 dark:to-slate-900 px-4">
+      <div className="max-w-md w-full bg-white dark:bg-slate-900 rounded-3xl shadow-2xl p-8 animate-fadeIn border border-gray-200 dark:border-gray-700">
+        <h2 className="text-3xl font-extrabold text-center text-green-700 dark:text-green-400 mb-6">
+          Welcome Back
+        </h2>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            name="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            className="input input-bordered w-full bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500"
+            required
+          />
+          <input
+            name="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            className="input input-bordered w-full bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500"
+            required
+          />
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+
+          <button
+            type="submit"
+            className="btn btn-success w-full py-2 text-lg font-semibold hover:scale-105 transform transition-shadow shadow-md hover:shadow-xl"
+          >
+            Login
+          </button>
+        </form>
+
+        {/* 🔘 DEMO USER BUTTON */}
         <button
-          type="submit"
-          className="btn btn-success w-full"
+          onClick={handleDemoLogin}
+          className="btn w-full mt-3 bg-gray-800 hover:bg-gray-900 text-white py-2 text-lg font-semibold hover:scale-105 transform transition-shadow shadow-md hover:shadow-xl"
         >
-          Login
+          Login as Demo User
         </button>
-      </form>
 
-      <button
-        onClick={handleGoogle}
-        className="btn btn-outline w-full mt-3"
-      >
-        Sign in with Google
-      </button>
+        <div className="divider text-gray-400 dark:text-gray-500 my-4">OR</div>
 
-      <p className="text-sm mt-3 text-center">
-        New here?{" "}
-        <Link to="/register" className="text-green-700 font-semibold">
-          Register
-        </Link>
-      </p>
+        <button
+          onClick={handleGoogle}
+          className="btn btn-outline w-full py-2 text-lg flex items-center justify-center gap-2 hover:scale-105 transform transition-shadow shadow-md hover:shadow-xl"
+        >
+          <img
+            src="https://media.istockphoto.com/id/2228661068/photo/isolated-google-logo-symbolizing-internet-search-and-technology.jpg?s=2048x2048&w=is&k=20&c=GkU1H8axd9pIdN--Sm6nGxn-MGJIGro6JVAzV07o5EQ="
+            alt="Google"
+            className="w-5 h-5"
+          />
+          Sign in with Google
+        </button>
+
+        <p className="text-sm mt-4 text-center text-gray-600 dark:text-gray-300">
+          New here?{" "}
+          <Link to="/register" className="text-green-700 dark:text-green-400 font-semibold hover:underline">
+            Register
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };

@@ -1,24 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthProvider.jsx";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { Moon, Sun, Menu, X } from "lucide-react";
 import { toast } from "react-toastify";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // Apply DaisyUI theme globally
   useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
   }, [theme]);
 
   const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");
@@ -26,86 +23,113 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await logOut();
-      toast.success('Log Out Successfully');
+      toast.success("Logged Out Successfully");
       navigate("/");
     } catch (err) {
       console.error("Logout failed:", err);
     }
   };
 
-  const navLinks = (
-    <>
-      <li>
-        <Link to="/" className="hover:text-green-400 transition">Home</Link>
-      </li>
-      <li>
-        <Link to="/all-crops" className="hover:text-green-400 transition">All Crops</Link>
-      </li>
-      {user ? (
-        <>
-          <li><Link to="/add-crop" className="hover:text-green-400 transition">Add Crop</Link></li>
-          <li><Link to="/my-posts" className="hover:text-green-400 transition">My Posts</Link></li>
-          <li><Link to="/my-interests" className="hover:text-green-400 transition">My Interests</Link></li>
-          <li><Link to="/my-crops" className="hover:text-green-400 transition">My Crops</Link></li>
-          <li><Link to="/my-profile" className="hover:text-green-400 transition">My Profile</Link></li>
-          <li>
+  // NavLink component: text always white + 3D hover + active background
+  const NavLink = ({ to, children }) => {
+    const isActive = location.pathname === to;
+    return (
+      <Link
+        to={to}
+        className={`
+          relative px-3 py-2 font-medium transition-all transform rounded-lg
+          text-white
+          hover:scale-105 hover:shadow-lg hover:bg-green-500/20 dark:hover:bg-green-400/20
+          ${isActive ? "bg-green-500/30 dark:bg-green-400/30" : ""}
+        `}
+      >
+        {children}
+      </Link>
+    );
+  };
+
+  return (
+    <nav className="fixed top-0 w-full z-50 backdrop-blur-md bg-base-100/90 dark:bg-slate-900/90 border-b border-gray-200 dark:border-gray-700 shadow-lg">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex justify-between items-center">
+
+        {/* Logo */}
+        <Link
+          to="/"
+          className="text-2xl font-extrabold text-green-600 dark:text-green-400 hover:scale-105 transition-transform"
+        >
+          KrishiLink
+        </Link>
+
+        {/* Desktop Menu */}
+        <ul className="hidden md:flex items-center gap-4">
+          <NavLink to="/">Home</NavLink>
+          <NavLink to="/all-crops">All Crops</NavLink>
+          {/* Only show dashboard link if user is logged in */}
+          {user && <NavLink to="/dashboard">Dashboard</NavLink>}
+          <NavLink to={'/about'}>About</NavLink>
+          <NavLink to={'/privacy'}>Privacy & Policy</NavLink>
+          {!user && <>
+            <NavLink to="/login">Login</NavLink>
+            <NavLink to="/register">Register</NavLink>
+          </>}
+
+          {user && (
             <button
               onClick={handleLogout}
-              className="bg-white text-green-600 px-4 py-1 rounded-md hover:bg-gray-100 transition font-semibold"
+              className="btn btn-sm btn-success ml-2 hover:scale-105 transform transition-shadow shadow-md hover:shadow-xl"
             >
               Logout
             </button>
-          </li>
-        </>
-      ) : (
-        <>
-          <li><Link to="/login" className="hover:text-green-400 transition">Login</Link></li>
-          <li><Link to="/register" className="hover:text-green-400 transition">Register</Link></li>
-        </>
-      )}
-    </>
-  );
+          )}
 
-  return (
-    <nav className="bg-gradient-to-r from-green-600 to-green-700 dark:from-gray-900 dark:to-gray-800 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold tracking-wide hover:scale-105 transition-transform">
-           KrishiLink
-        </Link>
-
-        <ul className="hidden md:flex items-center space-x-6 text-[17px] font-medium">
-          {navLinks}
-          <li>
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition"
-            >
-              {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
-            </button>
-          </li>
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            className="btn btn-square btn-ghost ml-2 hover:scale-110 transition-transform"
+          >
+            {theme === "light" ? <Moon className="text-white hover:text-black" size={20} /> : <Sun size={20} />}
+          </button>
         </ul>
 
-        <button
-          className="md:hidden p-2 bg-white/10 rounded hover:bg-white/20 transition"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        {/* Mobile Menu Button */}
+        <div className="md:hidden">
+          <button
+            className="btn btn-square btn-ghost"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </div>
 
+      {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-green-700 dark:bg-gray-900 px-6 pb-4">
-          <ul className="flex flex-col space-y-3 text-lg font-medium">
-            {navLinks}
-            <li>
+        <div className="md:hidden bg-base-100 dark:bg-slate-900 border-t border-gray-200 dark:border-gray-700 shadow-lg animate-slideDown">
+          <ul className="flex flex-col gap-2 p-4">
+            <NavLink to="/">Home</NavLink>
+            <NavLink to="/all-crops">All Crops</NavLink>
+            {user && <NavLink to="/dashboard">Dashboard</NavLink>}
+            {!user && <>
+              <NavLink to="/login">Login</NavLink>
+              <NavLink to="/register">Register</NavLink>
+            </>}
+            {user && (
               <button
-                onClick={toggleTheme}
-                className="flex items-center gap-2 mt-2 p-2 bg-white/10 rounded hover:bg-white/20 transition w-fit"
+                onClick={handleLogout}
+                className="btn btn-sm btn-success mt-2 hover:scale-105 transform transition-shadow shadow-md hover:shadow-xl"
               >
-                {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
-                {theme === "light" ? "Dark Mode" : "Light Mode"}
+                Logout
               </button>
-            </li>
+            )}
+
+            {/* Theme Toggle Mobile */}
+            <button
+              onClick={toggleTheme}
+              className="btn btn-ghost btn-sm mt-2 flex items-center gap-2"
+            >
+              {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
+              {theme === "light" ? "Dark Mode" : "Light Mode"}
+            </button>
           </ul>
         </div>
       )}

@@ -17,7 +17,11 @@ const MyProfile = () => {
   }, [user]);
 
   if (!user) {
-    return <div className="text-center mt-20 text-red-500">Please login to view profile.</div>;
+    return (
+      <div className="text-center mt-20 text-red-500 text-lg font-medium">
+        Please login to view your profile.
+      </div>
+    );
   }
 
   const handleSave = (e) => {
@@ -40,80 +44,88 @@ const MyProfile = () => {
 
   return (
     <div className="max-w-3xl mx-auto mt-12 px-4">
-      <h2 className="text-3xl font-bold text-green-700 mb-6">My Profile</h2>
+      <h2 className="text-4xl font-extrabold text-green-700 mb-8 text-center">
+        My Profile
+      </h2>
 
-      <div className="border p-6 rounded shadow bg-white">
+      <div className="bg-gray-800 rounded-2xl shadow-2xl p-8 border border-gray-200">
         {!editing ? (
           <>
-            <div className="flex items-center gap-4 mb-4">
-              <img
-                src={displayPhoto}
-                alt="Profile"
-                className="w-24 h-24 rounded-full object-cover"
-              />
-              <div>
-                <p className="text-xl font-semibold">{user.displayName || "No Name"}</p>
-                <p className="text-gray-600">{user.email}</p>
+            {/* Profile Info */}
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+              <div className="relative">
+                <img
+                  src={displayPhoto}
+                  alt="Profile"
+                  className="w-32 h-32 rounded-full object-cover shadow-lg border-4 border-green-200 transform hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <p className="text-2xl font-semibold text-green-700">{user.displayName || "No Name"}</p>
+                <p className="text-gray-600 mt-1">{user.email}</p>
               </div>
             </div>
 
-            <div className="flex gap-4 mt-4 flex-wrap">
+            {/* Action Buttons */}
+            <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-8">
               <button
                 onClick={() => setEditing(true)}
-                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+                className="bg-green-600 text-white px-5 py-2 rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transform transition duration-300"
               >
                 Edit Profile
               </button>
 
               <Link
                 to="/my-interests"
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                className="bg-blue-600 text-white px-5 py-2 rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transform transition duration-300"
               >
                 My Interests
               </Link>
 
               <Link
                 to="/my-crops"
-                className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 transition"
+                className="bg-yellow-600 text-white px-5 py-2 rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transform transition duration-300"
               >
                 My Crops
               </Link>
             </div>
           </>
         ) : (
-          <form onSubmit={handleSave} className="space-y-4">
-            <div>
-              <label className="block font-semibold mb-1">Name:</label>
-              <input
-                type="text"
-                className="w-full border p-2 rounded"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
+          <form onSubmit={handleSave} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block font-semibold mb-2">Name:</label>
+                <input
+                  type="text"
+                  className="w-full border px-4 py-2 rounded-xl shadow-inner focus:ring-2 focus:ring-green-300 focus:outline-none transition"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block font-semibold mb-2">Email:</label>
+                <input
+                  type="email"
+                  className="w-full border px-4 py-2 rounded-xl cursor-not-allowed shadow-inner"
+                  value={user.email}
+                  readOnly
+                />
+              </div>
             </div>
 
             <div>
-              <label className="block font-semibold mb-1">Email:</label>
-              <input
-                type="email"
-                className="w-full border p-2 rounded bg-gray-100 cursor-not-allowed"
-                value={user.email}
-                readOnly
-              />
-            </div>
-
-            <div>
-              <label className="block font-semibold mb-1">Profile Picture URL:</label>
+              <label className="block font-semibold mb-2">Profile Picture URL:</label>
               <input
                 type="text"
-                className="w-full border p-2 rounded"
+                className="w-full border px-4 py-2 rounded-xl shadow-inner focus:ring-2 focus:ring-green-300 focus:outline-none transition"
                 value={photoURL}
                 onChange={(e) => setPhotoURL(e.target.value)}
                 placeholder="Enter image URL"
               />
               <p className="text-gray-500 text-sm mt-1">
-                Paste an image URL to update profile picture.
+                Paste an image URL to update your profile picture.
               </p>
             </div>
 
@@ -121,22 +133,22 @@ const MyProfile = () => {
               <img
                 src={displayPhoto}
                 alt="Preview"
-                className="w-20 h-20 rounded-full object-cover border"
+                className="w-24 h-24 rounded-full object-cover border-2 border-green-200 shadow-lg"
               />
-              <span>Preview</span>
+              <span className="text-gray-600 font-medium">Preview</span>
             </div>
 
-            <div className="flex gap-4 mt-4 flex-wrap">
+            <div className="flex flex-wrap gap-4 mt-6">
               <button
                 type="submit"
-                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+                className="bg-green-600 text-white px-6 py-2 rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transform transition duration-300"
               >
                 Save
               </button>
               <button
                 type="button"
                 onClick={() => setEditing(false)}
-                className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition"
+                className="bg-gray-600 text-white px-6 py-2 rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transform transition duration-300"
               >
                 Cancel
               </button>

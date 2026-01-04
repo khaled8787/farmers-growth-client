@@ -16,6 +16,10 @@ import MyInterests from "./MyInterest.jsx";
 import CropDetails from "./CropDetails.jsx";
 import NotFound from "./NotFound.jsx";
 import "./index.css";
+import DashboardLayout from "./DashboardLayout.jsx";
+import Dashboard from "./Dashboard.jsx";
+import About from "./About.jsx";
+import Privacy from "./Privacy.jsx";
 
 
 const AddCropWrapper = () => {
@@ -49,20 +53,30 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      {
-        path: '/add-crop',
-        element: (
-          <PrivateRoute>
-            <AddCropWrapper /> 
-          </PrivateRoute>
-        ),
-      },
-      { path: "/my-posts", element: <PrivateRoute><MyPosts /></PrivateRoute> },
       { path: "/all-crops", element: <AllCrops /> },
-      { path: "/my-interests", element: <MyInterests /> },
-      { path: "/my-crops", element: <MyCrops /> },
-      { path: "/my-profile", element: <MyProfile /> },
-      { path: "/crops/:id", element: <PrivateRoute><CropDetails /></PrivateRoute> },
+      { path: "crops/:id", element: <CropDetails /> },
+      {path: '/about', element: <About></About>},
+      {path: '/privacy', element: <Privacy></Privacy>},
+      {
+        path: '/dashboard',
+        element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+        children: [
+          { index: true, element: <Dashboard /> },       // default dashboard page
+          { path: "my-interests", element: <MyInterests /> },
+          { path: "my-crops", element: <MyCrops /> },
+          { path: "my-profile", element: <MyProfile /> },
+          { path: "my-posts", element: <MyPosts /> },
+          {
+            path: 'add-crop',
+            element: 
+                <AddCrop></AddCrop>
+            
+          },
+          // যদি চাই PrivateRoute আর child route মিলিয়ে
+        ]
+      }
+      ,
+      
     ],
   },
   { path: "*", element: <NotFound /> },

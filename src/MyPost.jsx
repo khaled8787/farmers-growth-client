@@ -60,7 +60,7 @@ const MyPosts = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {crops.map(crop => (
           <div key={crop._id} className="bg-white shadow-lg rounded-lg overflow-hidden">
-            <img src={crop.image} alt={crop.name} className="w-full h-48 object-cover" />
+            <img src={crop.images[0]} alt={crop.name} className="w-full h-48 object-cover" />
             <div className="p-4">
               <h3 className="text-xl font-semibold text-green-700">{crop.name}</h3>
               <p>{crop.type} | {crop.quantity} {crop.unit}</p>
